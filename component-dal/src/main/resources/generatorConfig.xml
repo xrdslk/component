@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+			location="E:/.m2/repository/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.jar"/>
+	<context id="context1" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" /><!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.15.180.100:3306/mamijf_dev?useUnicode=true&amp;characterEncoding=UTF-8" userId="java" password="java@lh">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- javabeen生成的地方 -->
+		<javaModelGenerator targetPackage="com.xrds.basic.component.dal.model" targetProject="component-dal">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- mapper.xml生成的地方 -->
+		<sqlMapGenerator targetPackage="com.xrds.basic.component.dal.mapper" targetProject="component-dal">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.xrds.basic.component.dal.mapper" targetProject="component-dal">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- 表名和生成的实体名 -->
+
+		<table tableName="user_market_record" domainObjectName="UserMarketRecord" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+
+        <!-- 在该目录下运行java -jar mybatis-generator-core-1.3.2.jar -configfile generatorConfig.xml -overwrite  -->
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd"
+	   default-autowire="byName">
+	<context:component-scan base-package="com.xrds.basic.component.integration.*"></context:component-scan>
+	<!-- ntfct -->
+	<!-- 发送短信接口 -->
+	<dubbo:reference id="sendFacade" interface="com.kunpu.ntfct.facade.SendFacade" timeout="8000" check="false"></dubbo:reference>
+	<!-- 发送邮件接口 -->
+	<dubbo:reference id="sendEmailFacade" interface="com.kunpu.ntfct.facade.SendEmailFacade" timeout="8000" check="false"></dubbo:reference>
+	           
+</beans>

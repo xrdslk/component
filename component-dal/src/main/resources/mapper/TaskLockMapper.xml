@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xrds.basic.component.dal.TaskLockDao">
+	<resultMap id="BaseResultMap" type="com.xrds.basic.component.dal.model.TaskLockDo">
+		<id column="id" jdbcType="DECIMAL" property="id" />
+		<result column="business_type" jdbcType="VARCHAR" property="businessType" />
+		<result column="business_id" jdbcType="VARCHAR" property="businessId" />
+		<result column="task_status" jdbcType="INTEGER" property="taskStatus" />
+		<result column="is_finished" jdbcType="INTEGER" property="isFinished" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, business_type, business_id, task_status, is_finished, create_time,
+		update_time
+	</sql>
+	<select id="queryByTypeAndId" resultMap="BaseResultMap"
+		parameterType="com.xrds.basic.component.dal.model.TaskLockDo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM sys_d_task_lock
+		WHERE business_type = #{businessType,jdbcType=VARCHAR}
+		AND business_id = #{businessId,jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateFinishedByTypeAndId" parameterType="com.xrds.basic.component.dal.model.TaskLockDo">
+		UPDATE
+		sys_d_task_lock
+		SET is_finished = #{isFinished,jdbcType=INTEGER},
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE business_type =
+		#{businessType,jdbcType=VARCHAR}
+		AND business_id = #{businessId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateLock" parameterType="com.xrds.basic.component.dal.model.TaskLockDo">
+		UPDATE sys_d_task_lock
+		SET
+		task_status = 1,
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE business_type =
+		#{businessType,jdbcType=VARCHAR}
+		AND business_id = #{businessId,jdbcType=VARCHAR}
+		AND task_status = 0
+	</update>
+
+	<update id="updateUnLock" parameterType="com.xrds.basic.component.dal.model.TaskLockDo">
+		UPDATE sys_d_task_lock
+		SET task_status = 0,
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE business_type =
+		#{businessType,jdbcType=VARCHAR}
+		AND business_id = #{businessId,jdbcType=VARCHAR}
+		AND task_status = 1
+	</update>
+
+	<update id="updateStatusByPk" parameterType="com.xrds.basic.component.dal.model.TaskLockDo">
+		UPDATE
+		sys_d_task_lock
+		SET task_status = #{taskStatus,jdbcType=DECIMAL},
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE id =
+		#{id,jdbcType=DECIMAL}
+	</update>
+
+	<insert id="insertData" keyProperty="id" useGeneratedKeys="true"
+		parameterType="com.xrds.basic.component.dal.model.TaskLockDo">
+		INSERT INTO sys_d_task_lock
+		(business_type,business_id,task_status,is_finished,create_time,
+		update_time)
+		VALUES
+		(#{businessType,jdbcType=VARCHAR},#{businessId,jdbcType=VARCHAR},#{taskStatus,jdbcType=INTEGER},
+		#{isFinished,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="isExistsByTypeAndId" parameterType="com.xrds.basic.component.dal.model.TaskLockDo">
+		UPDATE
+		sys_d_task_lock
+		SET update_time = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE business_type = #{businessType,jdbcType=VARCHAR}
+		AND business_id = #{businessId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="queryOverTimeTask" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM sys_d_task_lock
+		WHERE 
+	    <![CDATA[ 
+			update_time < DATE_ADD(NOW(), INTERVAL - #{overMinutes,jdbcType=INTEGER} MINUTE)
+		]]>
+		AND task_status = 1
+	</select>
+</mapper>

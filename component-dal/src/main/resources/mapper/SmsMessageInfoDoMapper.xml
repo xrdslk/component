@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xrds.basic.component.dal.SmsMessageInfoDao">
+	<resultMap id="BaseResultMap" type="com.xrds.basic.component.dal.model.SmsMessageInfoDo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="message_id" property="messageId" jdbcType="BIGINT"/>
+        <result column="event_id" property="eventId" jdbcType="VARCHAR"/>
+        <result column="business_id" property="businessId" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+	<sql id="Base_Column_List">
+		id, message_id, template_id, business_id,
+		content,create_time, update_time
+	</sql>
+
+	<sql id="All_Sms_Column_List">
+		s.id, 
+		m.id as messageid,m.lock_id, m.message_type, m.pre_send_time,m.status,
+		m.lock_biz_id,m.mq, m.lock_status,
+		m.notice_level,m.lock_time,m.send_times,
+		s.message_id, s.template_id, s.business_id,
+		s.content,s.create_time, s.update_time
+	</sql>
+
+	<select id="queryByPK" resultType="com.xrds.basic.component.dal.model.SmsMessageInfoDo" parameterType="java.math.BigInteger">
+		SELECT
+		<include refid="All_Sms_Column_List" />
+		FROM sys_b_base_message m,sys_d_message_sms e
+		WHERE m.id = s.message_id and s.id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getSmsMessageByMessageId" resultType="com.xrds.basic.component.dal.model.SmsMessageInfoDo" parameterType="java.lang.Long">
+		SELECT
+		<include refid="All_Sms_Column_List" />
+		FROM sys_b_base_message m,sys_d_message_sms s
+		WHERE m.id = s.message_id and s.message_id = #{messageId,jdbcType=BIGINT}
+	</select>
+
+	<select id="querySmsMessageTotalRecords" resultType="java.lang.Integer" parameterType="com.xrds.basic.component.dal.model.SmsMessageInfoDo">
+		SELECT COUNT(m.ID)
+		FROM sys_b_base_message m,sys_d_message_sms s
+		WHERE m.id = s.message_id
+		AND m.status in ('I','F')
+		AND m.message_type = 'sms'
+		AND m.notice_level = #{noticeLevel,jdbcType=VARCHAR}
+		<![CDATA[ 
+			AND m.send_times<=#{sendTimes,jdbcType=INTEGER}
+		]]>
+	</select>
+
+	<select id="querySmsMessagePageList" resultType="com.xrds.basic.component.dal.model.SmsMessageInfoDo" parameterType="com.xrds.basic.component.dal.model.SmsMessageInfoDo">
+		SELECT <include refid="All_Sms_Column_List" />
+		FROM sys_b_base_message m,sys_d_message_sms s
+		WHERE m.id = s.message_id
+		AND m.status in ('I','F')
+		AND m.message_type = 'sms'
+		AND m.notice_level = #{noticeLevel,jdbcType=VARCHAR}
+		<![CDATA[ 
+			AND m.send_times<=#{sendTimes,jdbcType=INTEGER}
+		]]>
+	</select>
+
+
+	<delete id="deleteByPK" parameterType="java.math.BigInteger">
+		DELETE FROM
+		sys_d_message_sms
+		WHERE id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertData" keyProperty="id" useGeneratedKeys="true"
+		parameterType="com.xrds.basic.component.dal.model.SmsMessageInfoDo">
+		INSERT INTO sys_d_message_sms (id, message_id, event_id,
+      business_id, create_time, update_time, 
+      content)
+    VALUES (#{id,jdbcType=BIGINT}, #{messageId,jdbcType=BIGINT}, #{eventId,jdbcType=VARCHAR},
+      #{businessId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+	</insert>
+
+</mapper>

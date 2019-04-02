@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xrds.basic.component.dal.MessageReceiverDao">
+	<resultMap id="BaseResultMap" type="com.xrds.basic.component.dal.model.MessageReceiverDo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="message_id" property="messageId" jdbcType="BIGINT"/>
+        <result column="receiver" property="receiver" jdbcType="VARCHAR"/>
+    </resultMap>
+
+	<sql id="Base_Column_List">
+		id, message_id, receiver
+	</sql>
+
+	<select id="queryListByMessageId" resultType="com.xrds.basic.component.dal.model.MessageReceiverDo"
+		parameterType="java.math.BigInteger">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM 
+			sys_d_message_receiver_info
+		WHERE 
+			message_id = #{messageId,jdbcType=BIGINT}
+	</select>
+
+	<select id="count" resultType="java.lang.Integer"
+		parameterType="com.xrds.basic.component.dal.model.MessageReceiverDo">
+		SELECT COUNT(1)
+		FROM 
+			sys_d_message_receiver_info 
+		WHERE
+			message_id = #{messageId,jdbcType=BIGINT}
+	</select>
+
+	<select id="query" resultType="com.xrds.basic.component.dal.model.MessageReceiverDo"
+		parameterType="com.xrds.basic.component.dal.model.MessageReceiverDo">
+		SELECT <include refid="Base_Column_List" />
+		FROM 
+			sys_d_message_receiver_info 
+		WHERE
+			message_id = #{messageId,jdbcType=BIGINT}
+	</select>
+	
+	<insert id="insertList" parameterType="com.xrds.basic.component.dal.model.MessageReceiverDo">
+		INSERT INTO sys_d_message_receiver_info (message_id, receiver)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.messageId,jdbcType=BIGINT},
+			#{item.receiver,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	
+	<!-- 内部接口添加收件人信息 -->
+	<insert id="insertData" parameterType="java.util.List">
+	INSERT INTO sys_d_message_receiver_info (id, message_id, receiver
+      )
+    VALUES (#{id,jdbcType=BIGINT}, #{messageId,jdbcType=BIGINT}, #{receiver,jdbcType=VARCHAR}
+      )
+	</insert>
+</mapper>

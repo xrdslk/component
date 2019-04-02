@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd                
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx  
+        http://www.springframework.org/schema/tx/spring-tx.xsd 
+	    http://www.springframework.org/schema/aop 
+	    http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<context:component-scan base-package="com.xrds.basic.component.*">
+		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect" />
+	</context:component-scan>
+	<bean
+		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="location">
+			<value>file:/opt/configs/component/redis.properties</value>
+		</property>
+	</bean>
+	<!-- redis sentinel -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+		p:maxIdle="${redis.pool.maxIdle}" p:maxTotal="${redis.pool.maxActive}"
+		p:maxWaitMillis="${redis.pool.maxWaitMillis}" p:testOnBorrow="${redis.pool.testOnBorrow}"
+		p:testOnReturn="${redis.pool.testOnReturn}" p:testWhileIdle="${redis.pool.testWhileIdle}" />
+
+	<bean id="sentinelConfiguration"
+		class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
+		<property name="master">
+			<bean class="org.springframework.data.redis.connection.RedisNode">
+				<property name="name" value="${redis.sentinel.masterName}"></property>
+			</bean>
+		</property>
+		<property name="sentinels">
+			<set>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="${redis.sentinel1.host}"></constructor-arg>
+					<constructor-arg name="port" value="${redis.sentinel1.port}"></constructor-arg>
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="${redis.sentinel2.host}"></constructor-arg>
+					<constructor-arg name="port" value="${redis.sentinel2.port}"></constructor-arg>
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="${redis.sentinel3.host}"></constructor-arg>
+					<constructor-arg name="port" value="${redis.sentinel3.port}"></constructor-arg>
+				</bean>
+				<bean class="org.springframework.data.redis.connection.RedisNode">
+					<constructor-arg name="host" value="${redis.sentinel4.host}"></constructor-arg>
+					<constructor-arg name="port" value="${redis.sentinel4.port}"></constructor-arg>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="jedisConnFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:database="${redis.database}">
+		<constructor-arg name="sentinelConfig" ref="sentinelConfiguration"></constructor-arg>
+		<constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>
+	</bean>
+
+	<bean id="stringRedisSerializer"
+		class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+		p:connectionFactory-ref="jedisConnFactory" p:keySerializer-ref="stringRedisSerializer" />
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/rabbit  
+     http://www.springframework.org/schema/rabbit/spring-rabbit-1.7.xsd
+     http://www.springframework.org/schema/task  
+     http://www.springframework.org/schema/task/spring-task-4.1.xsd"> 
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<value>file:/opt/configs/component/env.properties</value>
+		</property>
+	</bean>
+
+	<!-- 配置connection-factory，指定连接rabbit server参数  -->
+	<rabbit:connection-factory id="providerConnectionFactory"
+		virtual-host="${provider.rabbit.virtual-host}" username="${provider.rabbit.username}"
+		password="${provider.rabbit.password}"  addresses="${rabbit.addresses}" />
+
+	<!-- 定义rabbit template用于数据的接收和发送 -->
+	<rabbit:template id="providerMqTemplate" connection-factory="providerConnectionFactory" message-converter="jsonMessageConverter" />
+	
+</beans>
+	

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xrds.basic.component.dal.MessageBaseInfoDao">
+	<resultMap id="BaseResultMap" type="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="message_type" property="messageType" jdbcType="VARCHAR"/>
+        <result column="pre_send_time" property="preSendTime" jdbcType="TIMESTAMP"/>
+        <result column="notice_level" property="noticeLevel" jdbcType="VARCHAR"/>
+        <result column="lock_biz_id" property="lockBizId" jdbcType="VARCHAR"/>
+        <result column="mq" property="mq" jdbcType="VARCHAR"/>
+        <result column="lock_id" property="lockId" jdbcType="VARCHAR"/>
+        <result column="lock_status" property="lockStatus" jdbcType="INTEGER"/>
+        <result column="lock_time" property="lockTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="send_times" property="sendTimes" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+	<sql id="Base_Column_List">
+		id, message_type, lock_biz_id,mq,pre_send_time, status,
+		lock_id,lock_status,notice_level,lock_time,
+		send_times, create_time, update_time
+	</sql>
+
+	<select id="queryByPK" resultType="com.xrds.basic.component.dal.model.MessageBaseInfoDo" parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM sys_b_base_message
+		WHERE id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="queryLockPageList" resultType="com.xrds.basic.component.dal.model.MessageBaseInfoDo"
+		parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM sys_b_base_message WHERE 
+    	lock_id = #{lockId,jdbcType=VARCHAR}
+    	AND lock_status = 1
+		AND status = 'F'
+	</select>
+
+
+	<delete id="deleteByPK" parameterType="java.math.BigInteger">
+		DELETE FROM
+		sys_b_base_message
+		WHERE id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertData" keyProperty="id" useGeneratedKeys="true"
+		parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		INSERT INTO sys_b_base_message (id, message_type, 
+		lock_biz_id,mq,pre_send_time, status,
+		lock_id,lock_status,notice_level,lock_time,
+		send_times, create_time, update_time)
+		VALUES (#{id,jdbcType=BIGINT},#{messageType,jdbcType=VARCHAR},
+		#{lockBizId,jdbcType=VARCHAR},#{mq,jdbcType=VARCHAR},
+		#{preSendTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+		#{lockId,jdbcType=VARCHAR},#{lockStatus,jdbcType=INTEGER},#{noticeLevel,jdbcType=VARCHAR},
+		#{lockTime,jdbcType=TIMESTAMP}, #{sendTimes,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	
+	<update id="updateLockBizId" parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		UPDATE sys_b_base_message
+		SET update_time = #{updateTime,jdbcType=TIMESTAMP},
+		lock_biz_id = #{lockBizId,jdbcType=VARCHAR}
+		WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateStatusByKey" parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		UPDATE sys_b_base_message
+		SET update_time = #{updateTime,jdbcType=TIMESTAMP},
+		status = #{status,jdbcType=INTEGER}
+		WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="lockMessageInfo" parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		UPDATE sys_b_base_message
+		SET update_time = #{updateTime,jdbcType=TIMESTAMP},
+		lock_id = #{lockId,jdbcType=VARCHAR},
+		lock_status = 1,
+		lock_time = #{lockTime,jdbcType=TIMESTAMP}
+		where
+		<![CDATA[ 
+			send_times < #{sendTimes,jdbcType=INTEGER}
+		]]>
+		AND status = 'F'
+		AND lock_status = 0
+	</update>
+	
+	<update id="releaseLockRecords" parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		UPDATE sys_b_base_message
+		SET update_time = #{updateTime,jdbcType=TIMESTAMP},
+		lock_status = 0
+		WHERE lock_id = #{lockId,jdbcType=VARCHAR}
+		AND lock_status = 1
+	</update>
+	
+	<update id="releaseLockRecord" parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		UPDATE sys_b_base_message
+		SET update_time = #{updateTime,jdbcType=TIMESTAMP},
+		lock_status = 0
+		WHERE id = #{id,jdbcType=BIGINT}
+		AND lock_status = 1
+	</update>
+	
+	<update id="updateMessageSendTimes" parameterType="com.xrds.basic.component.dal.model.MessageBaseInfoDo">
+		UPDATE sys_b_base_message
+		SET update_time = #{updateTime,jdbcType=TIMESTAMP},
+		send_times = SEND_TIMES + 1
+		WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+	
+</mapper>

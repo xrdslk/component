@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xrds.basic.component.dal.EmailMessageInfoDao">
+	<resultMap id="BaseResultMap" type="com.xrds.basic.component.dal.model.EmailMessageInfoDo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="message_id" property="messageId" jdbcType="BIGINT"/>
+        <result column="event_id" property="eventId" jdbcType="VARCHAR"/>
+        <result column="sender" property="sender" jdbcType="VARCHAR"/>
+        <result column="strategy" property="strategy" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="email_level" property="emailLevel" jdbcType="VARCHAR"/>
+        <result column="email_id" property="emailId" jdbcType="VARCHAR"/>
+        <result column="business_id" property="businessId" jdbcType="VARCHAR"/>
+        <result column="config_name" property="configName" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="files_path" property="filesPath" jdbcType="VARCHAR"/>
+        <result column="email_type" property="emailType" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+	<sql id="Base_Column_List">
+		id, message_id, template_id,
+		sender, strategy,
+		title,
+		email_level, email_id, business_id, config_name,
+		content,
+		files_path,
+		email_type,monitoring_type,monitoring_item,warn_level,warn_code,
+		deal_status,deal_advice,warn_time,create_time, update_time
+	</sql>
+
+	<sql id="All_Email_Column_List">
+		e.id, 
+		m.id as messageid,m.lock_id, m.message_type, m.pre_send_time,m.status,
+		m.lock_biz_id,m.mq, m.lock_status,
+		m.notice_level,m.lock_time,m.send_times,
+		e.message_id, e.template_id,
+		e.sender,
+		e.strategy,
+		e.title, e.email_level, e.email_id,
+		e.business_id,
+		e.config_name, e.content,
+		e.files_path,
+		e.email_type,e.monitoring_type,e.monitoring_item,e.warn_level,e.warn_code,
+		e.deal_status,e.deal_advice,e.warn_time,e.create_time, e.update_time
+	</sql>
+
+	<select id="queryByPK" resultType="com.xrds.basic.component.dal.model.EmailMessageInfoDo" parameterType="java.math.BigInteger">
+		SELECT
+		<include refid="All_Email_Column_List" />
+		FROM sys_b_base_message m,sys_d_message_email e
+		WHERE m.id = e.message_id and e.id = #{id,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getEmailMessageByMessageId" resultType="com.xrds.basic.component.dal.model.EmailMessageInfoDo" parameterType="java.math.BigInteger">
+		SELECT
+		<include refid="All_Email_Column_List" />
+		FROM sys_b_base_message m,sys_d_message_email e
+		WHERE m.id = e.message_id and e.message_id = #{messageId,jdbcType=BIGINT}
+	</select>
+	
+	<select id="queryEmailMessageTotalRecords" resultType="java.lang.Integer"
+		parameterType="com.xrds.basic.component.dal.model.EmailMessageInfoDo">
+		SELECT COUNT(m.ID)
+		FROM sys_b_base_message m,sys_d_message_email e
+		WHERE m.id = e.message_id
+		AND m.status in ('I','F')
+		AND m.message_type = 'email'
+		AND m.notice_level = #{noticeLevel,jdbcType=VARCHAR}
+		<![CDATA[ 
+			AND m.send_times<=#{sendTimes,jdbcType=INTEGER}
+		]]>
+	</select>
+
+	<select id="queryEmailMessagePageList" resultType="com.xrds.basic.component.dal.model.EmailMessageInfoDo"
+		parameterType="com.xrds.basic.component.dal.model.EmailMessageInfoDo">
+		SELECT
+		<include refid="All_Email_Column_List" />
+		FROM sys_b_base_message m,sys_d_message_email e
+		WHERE m.id = e.message_id
+		AND m.status in ('I','F')
+		AND m.message_type = 'email'
+		AND m.notice_level = #{noticeLevel,jdbcType=VARCHAR}
+		<![CDATA[ 
+			AND m.send_times<=#{sendTimes,jdbcType=INTEGER}
+		]]>
+	</select>
+
+
+	<delete id="deleteByPK" parameterType="java.math.BigInteger">
+		DELETE FROM
+		sys_d_message_email
+		WHERE id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertData" keyProperty="id" useGeneratedKeys="true"
+		parameterType="com.xrds.basic.component.dal.model.EmailMessageInfoDo">
+		INSERT INTO sys_d_message_email (id, message_id,
+      event_id, sender, strategy, 
+      title, email_level, email_id, 
+      business_id, config_name, files_path, 
+      email_type, create_time, update_time, 
+      content)
+    VALUES (#{id,jdbcType=BIGINT}, #{messageId,jdbcType=BIGINT},
+      #{eventId,jdbcType=VARCHAR}, #{sender,jdbcType=VARCHAR}, #{strategy,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{emailLevel,jdbcType=VARCHAR}, #{emailId,jdbcType=VARCHAR}, 
+      #{businessId,jdbcType=VARCHAR}, #{configName,jdbcType=VARCHAR}, #{filesPath,jdbcType=VARCHAR}, 
+      #{emailType,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+	</insert>
+
+	<update id="updateStatusByPK" parameterType="com.xrds.basic.component.dal.model.EmailMessageInfoDo">
+		UPDATE
+		sys_d_message_email
+		SET
+		deal_status =
+		#{dealStatus,jdbcType=INTEGER},
+		deal_advice =
+		#{dealAdvice,jdbcType=VARCHAR},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP}
+		WHERE id = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>

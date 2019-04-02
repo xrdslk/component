@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd                
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx  
+        http://www.springframework.org/schema/tx/spring-tx.xsd 
+	    http://www.springframework.org/schema/aop 
+	    http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<context:component-scan base-package="com.xrds.basic.component.*" >
+		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect" />
+	</context:component-scan>
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+
+	<!-- 使用disconf必须添加以下配置 -->
+	<bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean" destroy-method="destroy">
+	    <property name="scanPackage" value="com.xrds.basic.component"/>
+    </bean>
+
+	<bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond" init-method="init" destroy-method="destroy"> </bean>
+
+
+	<!--  程序会自动reload配置-->
+    <bean id="configproperties_reloadable_disconf" class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
+        <property name="locations">
+			<list>
+			   <value>file:/opt/configs/component/env.properties</value>
+			</list>
+		</property>
+	</bean>
+    <bean id="propertyConfigurerReloadRoot" class="com.baidu.disconf.client.addons.properties.ReloadingPropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="propertiesArray">
+			<list>
+			  <ref bean="configproperties_reloadable_disconf"/>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

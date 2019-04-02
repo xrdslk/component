@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xrds.basic.component.dal.TransRequestLogDao">
+    <resultMap id="BaseResultMap" type="com.xrds.basic.component.dal.model.TransRequestLogDo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="bus_type" property="busType" jdbcType="VARCHAR"/>
+        <result column="bus_id" property="busId" jdbcType="VARCHAR"/>
+        <result column="req_channel" property="reqChannel" jdbcType="VARCHAR"/>
+        <result column="req_server_id" property="reqServerId" jdbcType="VARCHAR"/>
+        <result column="req_param" property="reqParam" jdbcType="LONGVARCHAR"/>
+        <result column="req_time" property="reqTime" jdbcType="TIMESTAMP"/>
+        <result column="resp_param" property="respParam" jdbcType="LONGVARCHAR"/>
+        <result column="resp_time" property="respTime" jdbcType="TIMESTAMP"/>
+        <result column="resp_code" property="respCode" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, bus_type, bus_id, req_channel, req_server_id, req_time, resp_time, resp_code, 
+    create_time, update_time
+  </sql>
+    <insert id="insertData" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.xrds.basic.component.dal.model.TransRequestLogDo">
+    insert into sys_trans_request_log (id, bus_type, bus_id, 
+      req_channel, req_server_id, req_time, 
+      resp_time, resp_code, create_time, 
+      update_time, req_param, resp_param
+      )
+    values (#{id,jdbcType=BIGINT}, #{busType,jdbcType=VARCHAR}, #{busId,jdbcType=VARCHAR}, 
+      #{reqChannel,jdbcType=VARCHAR}, #{reqServerId,jdbcType=VARCHAR}, #{reqTime,jdbcType=TIMESTAMP}, 
+      #{respTime,jdbcType=TIMESTAMP}, #{respCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{reqParam,jdbcType=LONGVARCHAR}, #{respParam,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+</mapper>

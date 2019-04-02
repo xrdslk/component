@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xrds.basic.component.dal.SequenceDao">
+	<resultMap id="BaseResultMap" type="com.xrds.basic.component.dal.model.SequenceDo">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="content" jdbcType="VARCHAR" property="content" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+	</resultMap>
+
+	<insert id="getCommonSeq" keyProperty="id" useGeneratedKeys="true"
+		parameterType="com.xrds.basic.component.dal.model.SequenceDo">
+		INSERT INTO
+		sys_b_comm_sequence(
+		content,create_time)values(
+		#{content,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+	</insert>
+
+</mapper>

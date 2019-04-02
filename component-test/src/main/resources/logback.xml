@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true">
+	<contextName>wangtq-AppName</contextName>
+	<property name="APP_NAME" value="cip"/>
+	<property name="LOG_HOME" value="/opt/logs"/>
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<!-- controller -->
+	<appender name="sysControllerRolling"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${APP_NAME}/controller/${APP_NAME}-controller.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}/controller/${APP_NAME}-%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>50MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<!-- biz -->
+	<appender name="sysBizRolling"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${APP_NAME}/biz/${APP_NAME}-biz.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}/biz/${APP_NAME}-%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>50MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<!-- dal -->
+	<appender name="sysDalRolling"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${APP_NAME}/dal/${APP_NAME}-dal.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}/dal/${APP_NAME}-%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>50MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<!-- service -->
+	<appender name="sysServiceRolling"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${APP_NAME}/service/${APP_NAME}-service.log
+		</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}/service/${APP_NAME}-%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>50MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<!-- common -->
+	<appender name="sysCommonRolling"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${APP_NAME}/common/${APP_NAME}-common.log
+		</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}/common/${APP_NAME}-%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>50MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<!-- error -->
+	<appender name="sysErrorRolling"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+
+		<file>${LOG_HOME}/${APP_NAME}/error/${APP_NAME}-error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}/error/${APP_NAME}-%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>50MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!-- error -->
+	<appender name="sysIntergrationRolling"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${APP_NAME}/intergration/${APP_NAME}-intergration.log
+		</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}/intergration/${APP_NAME}-%d{yyyy-MM-dd}.%i.zip
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>50MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n
+			</pattern>
+			<immediateFlush>true</immediateFlush>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<logger name="sys.controller" level="INFO" >
+		<appender-ref ref="sysControllerRolling" />
+	</logger>
+	<logger name="sys.biz" level="INFO" >
+		<appender-ref ref="sysBizRolling" />
+	</logger>
+	<logger name="sys.service" level="INFO">
+		<appender-ref ref="sysServiceRolling" />
+	</logger>
+	<logger name="sys.dal" level="INFO" >
+		<appender-ref ref="sysDalRolling" />
+	</logger>
+	<!--<logger name="sys.error" level="ERROR">
+		<appender-ref ref="sysErrorRolling" />
+	</logger>-->
+	<logger name="sys.integration" level="INFO">
+		<appender-ref ref="sysIntergrationRolling" />
+	</logger>
+	<logger name="sys.common" level="INFO">
+		<appender-ref ref="sysCommonRolling" />
+	</logger>
+
+	<!-- 日志级别 -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="sysErrorRolling" />
+		<appender-ref ref="sysServiceRolling" />
+	</root>
+</configuration>
