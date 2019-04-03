@@ -8,7 +8,7 @@ import org.apache.commons.lang3.time.StopWatch;
  * @author admin
  *
  */
-public class KunPuStopWatch {
+public class BasicStopWatch {
 
   /**
    * 性能日志监控

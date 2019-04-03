@@ -36,6 +36,7 @@
 		<aspectjrt.version>1.8.1</aspectjrt.version>
 		<aspectj.version>1.8.9</aspectj.version>
 		<junit.version>4.12</junit.version>
+		<cachecloud.client.version>1.0-SNAPSHOT</cachecloud.client.version>
 		<facadetest-facade.version>0.0.1-SNAPSHOT</facadetest-facade.version>
 		<ntfct-facade.version>0.0.7-SNAPSHOT</ntfct-facade.version>
 		<spring-rabbit-version>1.7.3.RELEASE</spring-rabbit-version>
@@ -276,6 +277,12 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>com.sohu.tv</groupId>
+			    <artifactId>cachecloud-open-client-redis</artifactId>
+			    <version>${cachecloud.client.version}</version>
 			</dependency>
 			<!-- dubbo -->
 			<dependency>

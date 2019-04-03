@@ -14,7 +14,7 @@ import com.kunpu.frameworks.commons.utils.BeanCopierUtils;
  * @author yuyangzhi
  * @version $Id: AbsParamPrinter.java, v 0.1 2018年6月28日 上午11:57:43 yuyangzhi Exp $
  */
-public abstract class AbsParamPrinter extends KunPuStopWatch {
+public abstract class AbsParamPrinter extends BasicStopWatch {
 
   /**
    * 参数打印

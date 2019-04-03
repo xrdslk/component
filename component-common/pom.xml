@@ -71,6 +71,17 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		
+		<!-- <dependency>
+		    <groupId>com.sohu.tv</groupId>
+		    <artifactId>cachecloud-open-client-redis</artifactId>
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>redis.clients</groupId>
+					<artifactId>jedis</artifactId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency> -->
 	</dependencies>
 
 	<build>

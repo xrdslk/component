@@ -114,6 +114,14 @@ public enum BusErrorCode implements IErrorCode {
   /** 无有效的IP **/
   ERROR_504("504", "无有效的IP", BusRespCode.RESP_400),
 
+
+  /** 银行卡格式错误 */
+  ERROR_752("752", "银行卡格式错误", BusRespCode.RESP_752), //
+  /** 身份证信息错误 */
+  ERROR_753("753", "身份证信息错误", BusRespCode.RESP_753), //
+  /** 手机号格式错误 */
+  ERROR_754("754", "手机号格式错误", BusRespCode.RESP_754), //
+
   /** 初始化redis自增失败 */
   ERROR_801("801", "初始化redis自增失败 ", BusRespCode.RESP_801), //
   /** 获取redis序列号失败 */
