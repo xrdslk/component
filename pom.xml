@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xrds.basic</groupId>
 	<artifactId>component</artifactId>
@@ -47,6 +48,11 @@
 	</properties>
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.opencv</groupId>
+				<artifactId>opencv</artifactId>
+				<version>4.1.1</version>
+			</dependency>
 			<!-- 配置中心 -->
 			<dependency>
 				<groupId>com.baidu.disconf</groupId>
@@ -215,8 +221,8 @@
 				<version>${kunpu-middleware-rabbit.version}</version>
 				<exclusions>
 					<exclusion>
-						 <groupId>com.mangofactory</groupId>
-    					 <artifactId>swagger-springmvc</artifactId>
+						<groupId>com.mangofactory</groupId>
+						<artifactId>swagger-springmvc</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -445,14 +451,14 @@
 			<url>http://10.15.180.7:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-  <modules>
-    <module>component-web</module>
-    <module>component-facade</module>
-    <module>component-biz</module>
-    <module>component-service</module>
-    <module>component-dal</module>
-    <module>component-integration</module>
-    <module>component-common</module>
-    <module>component-test</module>
-  </modules>
+	<modules>
+		<module>component-web</module>
+		<module>component-facade</module>
+		<module>component-biz</module>
+		<module>component-service</module>
+		<module>component-dal</module>
+		<module>component-integration</module>
+		<module>component-common</module>
+		<module>component-test</module>
+	</modules>
 </project>
