@@ -40,7 +40,7 @@
 		<facadetest-facade.version>0.0.1-SNAPSHOT</facadetest-facade.version>
 		<ntfct-facade.version>0.0.7-SNAPSHOT</ntfct-facade.version>
 		<spring-rabbit-version>1.7.3.RELEASE</spring-rabbit-version>
-		<spring-amqp-version>1.7.3.RELEASE</spring-amqp-version>
+		<spring-amqp-version>2.3.11</spring-amqp-version>
 		<amqp-client-version>4.2.0</amqp-client-version>
 		<hessian-version>4.0.38</hessian-version>
 		<disconf-client.version>2.6.36</disconf-client.version>
